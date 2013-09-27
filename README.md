@@ -30,6 +30,15 @@ divisor. However, it does not work on all the devices. In particular, the
 `ttyACM` driver does not support this way of setting a custom speed and
 conveying the information to the device over USB.
 
+License
+=======
+
+This software is made available under the GNU General Public License. See the
+source files and the `LICENSE` file for more information.
+
+Programs composing this package
+===============================
+
 `serialbridge`
 --------------
 
