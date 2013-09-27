@@ -1,5 +1,7 @@
 CC = gcc
 CFLAGS = -std=c99 -O3 -Wall -Wextra
+LD = gcc
+LDFLAGS = -O
 RM = rm -f
 
 PROGS = serialbridge setspeed
@@ -9,10 +11,14 @@ PROGS = serialbridge setspeed
 all: $(PROGS)
 
 clean:
-	$(RM) $(PROGS)
+	$(RM) *.o $(PROGS)
 
-setspeed: setspeed.c
-	$(CC) $(CFLAGS) -o setspeed setspeed.c
+setspeed: setspeed.o speed.o
 
-serialbridge: serialbridge.c
-	$(CC) $(CFLAGS) -o serialbridge serialbridge.c
+serialbridge: serialbridge.o speed.o
+
+serialbridge.o: serialbridge.c check.h speed.h
+
+speed.o: speed.c check.h speed.h
+
+setspeed.o: setspeed.c speed.h

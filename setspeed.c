@@ -4,6 +4,8 @@
 #include <stropts.h>
 #include <linux/termios.h>
 
+#include "speed.h"
+
 int main(int argc, char *argv[]) {
   if (argc != 3)
     goto error;
@@ -15,17 +17,7 @@ int main(int argc, char *argv[]) {
     perror("open");
     exit(1);
   }
-  struct termios2 t;
-  if (ioctl(fd, TCGETS2, &t)) {
-    perror("TCGETS2");
-    exit(1);
-  }
-  t.c_cflag = (t.c_cflag & ~CBAUD) | BOTHER;
-  t.c_ispeed = t.c_ospeed = speed;
-  if (ioctl(fd, TCSETS2, &t)) {
-    perror("TCSETS2");
-    exit(1);
-  }
+  setspeed(fd, speed);
   exit(0);
  error:
   fprintf(stderr, "Usage: %s port speed\n", argv[0]);

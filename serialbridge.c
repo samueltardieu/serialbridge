@@ -11,31 +11,18 @@
 #include <linux/termios.h>
 #include <netinet/in.h>
 
+#include "check.h"
+#include "speed.h"
+
 extern void cfmakeraw(struct termios *);
 
 static int verbose = 0;
-
-#define check(test, msg) \
-  do {			 \
-    if (test) {		 \
-      perror(msg);	 \
-      exit(1);		 \
-    }			 \
-  } while(0)
 
 static void makeraw(int fd) {
   struct termios t;
   check(ioctl(fd, TCGETS, &t), "TCGETS");
   cfmakeraw(&t);
   check(ioctl(fd, TCSETS, &t), "TCSETS");
-}
-
-static void setspeed(int fd, int speed) {
-  struct termios2 t;
-  check(ioctl(fd, TCGETS2, &t), "TCGETS2");
-  t.c_cflag = (t.c_cflag & ~CBAUD) | BOTHER;
-  t.c_ispeed = t.c_ospeed = speed;
-  check(ioctl(fd, TCSETS2, &t), "TCSETS2");
 }
 
 static int serialsetup(const char *name, int speed) {
